@@ -1,85 +1,238 @@
-# Sprout — Multi-Vendor Marketplace
+# 🌱 Sprout - Multi-Vendor Marketplace
 
-Three independent layers, meant to be built and verified in this order:
+A modern **Full Stack Multi-Vendor Marketplace** built using **React, Vite, Express.js, and PostgreSQL**. The application allows users to browse products, search items, filter by category, tags, and price, and view stock availability through a clean, responsive interface.
 
+---
+
+## 📌 Features
+
+### 🎨 Frontend
+
+- Modern Dark UI with Glassmorphism Design
+- Responsive Layout
+- Product Search (Debounced)
+- Category Filtering
+- Tag Filtering
+- Price Range Filtering
+- Product Sorting
+- Pagination
+- Skeleton Loading Cards
+- Stock Availability Indicator
+- URL-based Filter State
+
+### ⚙️ Backend
+
+- RESTful API using Express.js
+- Query Validation
+- Dynamic Filtering
+- Pagination
+- Sorting
+- Mock Database Support
+- PostgreSQL Integration
+
+### 🗄️ Database
+
+- Normalized PostgreSQL Schema
+- Products
+- Vendors
+- Categories
+- Tags
+- Product Variants
+- Seed Data
+- SQL Query Builder
+
+---
+
+# 🛠️ Tech Stack
+
+| Technology   | Purpose         |
+| ------------ | --------------- |
+| React        | Frontend        |
+| Vite         | Build Tool      |
+| Tailwind CSS | Styling         |
+| Express.js   | Backend API     |
+| PostgreSQL   | Database        |
+| Node.js      | Runtime         |
+| Lucide React | Icons           |
+| Git & GitHub | Version Control |
+
+---
+
+# 📂 Project Structure
+
+```text
+Sprout/
+│
+├── backend/
+│   ├── src/
+│   │   ├── data/
+│   │   ├── db/
+│   │   ├── middleware/
+│   │   ├── routes/
+│   │   └── utils/
+│   ├── package.json
+│   └── .env
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   └── postcss.config.js
+│
+├── database/
+│   ├── schema.sql
+│   ├── seed.sql
+│   └── example-queries.sql
+│
+└── README.md
 ```
-sprout/
-├── database/     PostgreSQL schema, seed data, example query
-├── backend/      Express REST API (GET /api/products)
-└── frontend/     React + Tailwind client (Vite)
-```
 
-## 1. Database
+---
+
+# 🚀 Installation
+
+## Clone the Repository
 
 ```bash
-psql -U postgres -c "CREATE DATABASE sprout"
-psql -U postgres -d sprout -f database/schema.sql
-psql -U postgres -d sprout -f database/seed.sql
+git clone https://github.com/sujal-2246/Sprout.git
+
+cd Sprout
 ```
 
-`database/example-queries.sql` shows the category + tag + price-range +
-stock-rollup lookup referenced in the brief, with notes on why it's built
-that way.
+---
 
-## 2. Backend
+## Backend Setup
 
 ```bash
 cd backend
-cp .env.example .env
 npm install
-npm run dev          # http://localhost:4000
 ```
 
-**`USE_MOCK_DB=true`** (the default in `.env.example`) serves a hardcoded
-in-memory dataset (`src/data/mockProducts.js`) that mirrors the seed data
-exactly — same fields, same filter semantics — so you can build and test
-the API, and then the frontend, before Postgres is wired up at all. Flip it
-to `false` once your database is running and the same route switches to
-real `pg` queries with zero changes elsewhere.
+Create a **.env** file inside the backend folder.
 
-Try it:
+```env
+PORT=4000
+
+USE_MOCK_DB=true
+
+PGHOST=localhost
+PGPORT=5432
+PGDATABASE=sprout
+PGUSER=postgres
+PGPASSWORD=your_password
+```
+
+Start the backend server.
+
 ```bash
-curl "http://localhost:4000/api/products?category=keyboards&tags=wireless,mechanical&minPrice=50&page=1&limit=10"
+npm run dev
 ```
 
-## 3. Frontend
+---
+
+## Frontend Setup
 
 ```bash
 cd frontend
+
 npm install
-npm run dev           # http://localhost:5173
+
+npm install lucide-react
+
+npm run dev
 ```
 
-Vite's dev server proxies `/api/*` to `http://localhost:4000` (see
-`vite.config.js`), so the frontend can call relative paths in both dev and
-prod without a CORS workaround.
+---
 
-## How the pieces connect
+# 🌐 Application URLs
 
-- **URL is the source of truth.** `useProductFilters` reads every filter
-  (category, tags, price, search, sort, page) out of `URLSearchParams` and
-  exposes setters that write back to it — components never hold their own
-  copy of "is this checked."
-- **Any filter change resets `page` to 1** automatically inside the hook's
-  `applyUpdate`, except `setPage` itself.
-- **Search is debounced 300ms** in `SearchBar` before it ever touches the
-  URL, so typing "mechanical keyboard" produces one history entry, not
-  eighteen.
-- **Skeletons match card dimensions exactly** so the grid doesn't jump when
-  real data arrives.
-- **The query builder never string-interpolates values** — every filter is
-  bound as a `$1, $2...` parameter, so it's immune to SQL injection
-  regardless of what's in the query string.
+| Service      | URL                                |
+| ------------ | ---------------------------------- |
+| Frontend     | http://localhost:5173              |
+| Backend API  | http://localhost:4000              |
+| Health Check | http://localhost:4000/health       |
+| Products API | http://localhost:4000/api/products |
 
-## Design notes
+---
 
-Dark, high-contrast, glassmorphism header per the brief. Two additions
-specific to this project rather than generic dark-mode defaults:
+# 📡 Example API Request
 
-- **Sprout green** (`#6CDB8C`) as the single accent, paired with a muted
-  **soil brown** (`#B08968`) used sparingly for "Limited Edition" badges —
-  so the palette has a grounding note instead of leaning on one neon color.
-- **Stock levels render as a small growth bar** on each card instead of
-  just a number — a short green fill for "plenty left," empty and grey for
-  out of stock. Skeleton loaders use a slow opacity "breathe" instead of a
-  shimmer sweep, in the same spirit.
+```http
+GET /api/products?category=keyboards&tags=wireless,mechanical&minPrice=50&page=1&limit=10
+```
+
+---
+
+# 📸 Screenshots
+
+## Home Page
+
+> Add your homepage screenshot here.
+
+```
+docs/homepage.png
+```
+
+## Product Listing
+
+> Add product listing screenshot here.
+
+```
+docs/products.png
+```
+
+## Search & Filters
+
+> Add filter/search screenshot here.
+
+```
+docs/filters.png
+```
+
+---
+
+# 📖 API Endpoints
+
+| Method | Endpoint                      | Description         |
+| ------ | ----------------------------- | ------------------- |
+| GET    | /health                       | Check server status |
+| GET    | /api/products                 | Get all products    |
+| GET    | /api/products?search=keyboard | Search products     |
+| GET    | /api/products?category=audio  | Filter by category  |
+| GET    | /api/products?page=2          | Pagination          |
+
+---
+
+# 🎯 Future Improvements
+
+- User Authentication
+- Shopping Cart
+- Wishlist
+- Product Reviews & Ratings
+- Image Upload
+- Admin Dashboard
+- Order Management
+- Payment Gateway Integration
+- Deployment (Vercel + Render)
+
+---
+
+# 👨‍💻 Author
+
+**Sujal Ragbale**
+
+- GitHub: https://github.com/sujal-2246
+
+---
+
+# ⭐ Support
+
+If you found this project helpful, consider giving it a **⭐ Star** on GitHub!
