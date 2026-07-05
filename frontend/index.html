@@ -1,9 +1,20 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sprout — Marketplace</title>
+    <meta name="description" content="Sprout — a marketplace for independent vendors." />
+    <!-- Applies the saved/system theme before React mounts, so there's no
+         flash of the wrong theme on load. Mirrors the logic in
+         contexts/ThemeContext.jsx — keep the two in sync if either changes. -->
+    <script>
+      (function () {
+        var stored = localStorage.getItem('sprout-theme');
+        var isDark = stored ? stored === 'dark' : !window.matchMedia('(prefers-color-scheme: light)').matches;
+        document.documentElement.classList.toggle('dark', isDark);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

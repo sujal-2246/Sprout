@@ -12,10 +12,12 @@ export default function SkeletonCard() {
       <div className="mt-3 space-y-2">
         <div className="h-3.5 w-3/4 animate-breathe rounded bg-base-raised" />
         <div className="h-3 w-1/2 animate-breathe rounded bg-base-raised" />
+        <div className="h-3 w-1/3 animate-breathe rounded bg-base-raised" />
       </div>
-      <div className="mt-4 flex items-center justify-between">
-        <div className="h-4 w-16 animate-breathe rounded bg-base-raised" />
-        <div className="h-4 w-10 animate-breathe rounded bg-base-raised" />
+      <div className="mt-3 h-4 w-20 animate-breathe rounded bg-base-raised" />
+      <div className="mt-3 flex items-center justify-between">
+        <div className="h-4 w-14 animate-breathe rounded bg-base-raised" />
+        <div className="h-7 w-16 animate-breathe rounded-lg bg-base-raised" />
       </div>
     </div>
   );

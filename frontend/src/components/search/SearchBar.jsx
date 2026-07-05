@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
-import { useDebouncedCallback } from '../hooks/useDebouncedCallback';
+import { useDebouncedCallback } from '../../hooks/useDebouncedCallback';
 
 /**
  * Local `draftValue` state exists ONLY so the input feels instant while
